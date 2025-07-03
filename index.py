@@ -105,7 +105,7 @@ while True:
                         print("Status is empty! Please try again!")
                         continue
 
-                    elif status in ["active", "deactive"]:
+                    elif status in ("active", "deactive"):
                         break
 
                     print("Status is not valid! Please try again.")
@@ -145,8 +145,8 @@ while True:
 
                 # region ask about columns
                 if input("Do you want to See all columns (yes-etc)? ") == "yes":
-                    display_col = ["Code", "Title", "Time", "Des", "Status"]
-                    display_indexes = [0, 1, 2, 3, 4]
+                    display_col = ("Code", "Title", "Time", "Des", "Status")
+                    display_indexes = (0, 1, 2, 3, 4)
                 else:
                     # region select columns
                     display_col = []
@@ -206,7 +206,7 @@ while True:
                         "---------------------------------------------------------------"
                     )
                     for row, todo in enumerate(todo_list, 1):
-                        print(row, *[todo[i] for i in display_indexes], sep="\t")
+                        print(row, *(todo[i] for i in display_indexes), sep="\t")
                     print(
                         "==============================================================="
                     )
@@ -223,8 +223,8 @@ while True:
                     break
                 # endregion
 
-                display_col = ["Code", "Title", "Time", "Des", "Status"]
-                display_indexes = [0, 1, 2, 3, 4]
+                display_col = ("Code", "Title", "Time", "Des", "Status")
+                display_indexes = (0, 1, 2, 3, 4)
 
                 # region select remove col
                 while True:
@@ -237,7 +237,7 @@ while True:
                         "---------------------------------------------------------------"
                     )
                     for row, todo in enumerate(todo_list, 1):
-                        print(row, *[todo[i] for i in display_indexes], sep="\t")
+                        print(row, *(todo[i] for i in display_indexes), sep="\t")
                     print(
                         "==============================================================="
                     )
@@ -246,7 +246,7 @@ while True:
                         "Select Columns to remove: 1.[C]ode 2.[T]itle 3.[Ti]me 4.[S]tatus\nSelect: "
                     )
                     system("cls")
-                    if remove_col in ["1", "2", "3", "4", "C", "T", "Ti", "S"]:
+                    if remove_col in ("1", "2", "3", "4", "C", "T", "Ti", "S"):
                         break
                     print("Remove column is not Valid! Please try again.")
 
@@ -267,7 +267,7 @@ while True:
                             )
                             for row, todo in enumerate(todo_list, 1):
                                 print(
-                                    row, *[todo[i] for i in display_indexes], sep="\t"
+                                    row, *(todo[i] for i in display_indexes), sep="\t"
                                 )
                             print(
                                 "==============================================================="
@@ -306,7 +306,7 @@ while True:
                             )
                             for row, todo in enumerate(todo_list, 1):
                                 print(
-                                    row, *[todo[i] for i in display_indexes], sep="\t"
+                                    row, *(todo[i] for i in display_indexes), sep="\t"
                                 )
                             print(
                                 "==============================================================="
@@ -335,7 +335,7 @@ while True:
                             )
                             for row, todo in enumerate(todo_list, 1):
                                 print(
-                                    row, *[todo[i] for i in display_indexes], sep="\t"
+                                    row, *(todo[i] for i in display_indexes), sep="\t"
                                 )
                             print(
                                 "==============================================================="
@@ -364,7 +364,7 @@ while True:
                             )
                             for row, todo in enumerate(todo_list, 1):
                                 print(
-                                    row, *[todo[i] for i in display_indexes], sep="\t"
+                                    row, *(todo[i] for i in display_indexes), sep="\t"
                                 )
                             print(
                                 "==============================================================="
@@ -416,8 +416,8 @@ while True:
                     break
                 # endregion
 
-                display_col = ["Code", "Title", "Time", "Des", "Status"]
-                display_indexes = [0, 1, 2, 3, 4]
+                display_col = ("Code", "Title", "Time", "Des", "Status")
+                display_indexes = (0, 1, 2, 3, 4)
 
                 # region select edit col
                 while True:
@@ -430,7 +430,7 @@ while True:
                         "---------------------------------------------------------------"
                     )
                     for row, todo in enumerate(todo_list, 1):
-                        print(row, *[todo[i] for i in display_indexes], sep="\t")
+                        print(row, *(todo[i] for i in display_indexes), sep="\t")
                     print(
                         "==============================================================="
                     )
@@ -439,7 +439,7 @@ while True:
                         "Select Columns to edit: 1.[C]ode 2.[T]itle \nSelect: "
                     )
                     system("cls")
-                    if edit_col in ["1", "2", "C", "T"]:
+                    if edit_col in ("1", "2", "C", "T"):
                         break
                     print("Remove column is not Valid! Please try again.")
 
@@ -460,7 +460,7 @@ while True:
                             )
                             for row, todo in enumerate(todo_list, 1):
                                 print(
-                                    row, *[todo[i] for i in display_indexes], sep="\t"
+                                    row, *(todo[i] for i in display_indexes), sep="\t"
                                 )
                             print(
                                 "==============================================================="
@@ -499,7 +499,7 @@ while True:
                             )
                             for row, todo in enumerate(todo_list, 1):
                                 print(
-                                    row, *[todo[i] for i in display_indexes], sep="\t"
+                                    row, *(todo[i] for i in display_indexes), sep="\t"
                                 )
                             print(
                                 "==============================================================="
@@ -587,7 +587,7 @@ while True:
                                         if new_time == todo[2]:
                                             break
 
-                                        if new_time in [str(i) for i in range(2025, 2040)]:
+                                        if new_time in tuple([str(i) for i in range(2025, 2040)]):
                                             break
 
                                         print("Time is not valid! Please try again.")
@@ -621,7 +621,7 @@ while True:
                                         if new_status == todo[4]:
                                             break
 
-                                        if new_status in ["active", "deactive"]:
+                                        if new_status in ("active", "deactive"):
                                             break
 
                                         print("Status is not valid! Please try again")
@@ -661,15 +661,15 @@ while True:
                 found = False
 
                 # region show todos
-                display_col = ["Code", "Title", "Time", "Des", "Status"]
-                display_indexes = [0, 1, 2, 3, 4]
+                display_col = ("Code", "Title", "Time", "Des", "Status")
+                display_indexes = (0, 1, 2, 3, 4)
                 print("===============================================================")
                 print("Row", *display_col, sep="\t")
                 print("---------------------------------------------------------------")
                 for row, todo in enumerate(todo_list, 1):
                     if value in todo:
                         found = True
-                        print(row, *[todo[i] for i in display_indexes], sep="\t")
+                        print(row, *(todo[i] for i in display_indexes), sep="\t")
 
                 if not found:
                     print("This value doesn't exist!")
