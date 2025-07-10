@@ -1,17 +1,14 @@
 from os import system
 from random import randint
 from time import sleep
-from collections import namedtuple
-
-Todo = namedtuple("todo", ["code", "title", "time", "des", "status"])
 
 
 todo_list = [
-    Todo(code=1, title="task1", time="2025", des="", status="active"),
-    Todo(code=2, title="task2", time="2025", des="", status="deactive"),
-    Todo(code=3, title="task3", time="2025", des="", status="active"),
-    Todo(code=4, title="task4", time="2026", des="", status="active"),
-    Todo(code=5, title="task5", time="2027", des="", status="active"),
+    {"code": 1, "title": "task1", "time": "2025", "des": "", "status": "active"},
+    {"code": 2, "title": "task2", "time": "2025", "des": "", "status": "deactive"},
+    {"code": 3, "title": "task3", "time": "2025", "des": "", "status": "active"},
+    {"code": 4, "title": "task4", "time": "2026", "des": "", "status": "active"},
+    {"code": 5, "title": "task5", "time": "2027", "des": "", "status": "active"},
 ]
 
 
@@ -21,7 +18,7 @@ while True:
     print("1. [A]dd todo")
     print("2. [D]isplay todo")
     print("3. [R]emove todo")
-    # print("4. [E]dit todo")
+    print("4. [E]dit todo")
     print("5. [S]earch todo")
     print("6. [Q]uit")
     print("---------------------------------------------------------")
@@ -46,7 +43,7 @@ while True:
                     # region check duplicate code
                     dup = False
                     for todo in todo_list:
-                        if todo.code == code:
+                        if todo["code"] == code:
                             dup = True
                             break
                     # endregion
@@ -67,8 +64,8 @@ while True:
                     dup = None
 
                     for todo in todo_list:
-                        if todo.title == title:
-                            dup = todo.title
+                        if todo["title"] == title:
+                            dup = todo["title"]
                             break
                     # endregion
 
@@ -128,8 +125,15 @@ while True:
                 ):
                     continue
 
-                todo = Todo(code, title, time, des, status)
-                todo_list.append(todo)
+                todo_list.append(
+                    {
+                        "code": code,
+                        "title": title,
+                        "time": time,
+                        "des": des,
+                        "status": status,
+                    }
+                )
                 print("\nTodo Added to the Todo list")
                 sleep(3)
                 system("cls")
@@ -155,8 +159,9 @@ while True:
                         print("Selected Columns: ", *display_col)
                         # region get column
                         input_col = input(
-                            "Select Columns: code title time des status\n OR quit\nSelect: "
+                            "Select Columns: code, title, time, des, status, quit\nSelect: "
                         )
+                        system("cls")
                         if input_col not in (
                             "code",
                             "title",
@@ -193,7 +198,7 @@ while True:
                     for row, todo in enumerate(todo_list, 1):
                         print(row, end="\t")
                         for col in display_col:
-                            print(getattr(todo, col), end="\t")
+                            print(todo[col], end="\t")
                         print()
                     print(
                         "==============================================================="
@@ -224,13 +229,13 @@ while True:
                         "---------------------------------------------------------------"
                     )
                     for row, todo in enumerate(todo_list, 1):
-                        print(row, *todo, sep="\t")
+                        print(row, *tuple(todo.values()), sep="\t")
                     print(
                         "==============================================================="
                     )
                     # endregion
                     remove_col = input(
-                        "Select Columns to remove: code title time status\nSelect: "
+                        "Select Columns to remove: code, title, time, status\nSelect: "
                     )
                     system("cls")
                     if remove_col in ("code", "title", "time", "des", "status"):
@@ -252,7 +257,7 @@ while True:
                         "---------------------------------------------------------------"
                     )
                     for row, todo in enumerate(todo_list, 1):
-                        print(row, *todo, sep="\t")
+                        print(row, *tuple(todo.values()), sep="\t")
                     print(
                         "==============================================================="
                     )
@@ -266,7 +271,9 @@ while True:
 
                     found = False
                     for todo in todo_list:
-                        if (int(val) if remove_col == "code" else val) == getattr(todo, remove_col):
+                        if (int(val) if remove_col == "code" else val) == todo[
+                            remove_col
+                        ]:
                             found = True
                             break
 
@@ -278,16 +285,14 @@ while True:
                 system("cls")
                 found = False
                 for todo in todo_list.copy():
-                    if getattr(todo, remove_col) == (
-                        int(val) if remove_col == "code" else val
-                    ):
+                    if todo[remove_col] == (int(val) if remove_col == "code" else val):
                         found = True
                         # region display current todo
                         print("-------------------------------------")
-                        print("Title:", todo.title)
-                        print("Time:", todo.time)
-                        print("des:", todo.des)
-                        print("Status:", todo.status)
+                        print("Title:", todo["title"])
+                        print("Time:", todo["time"])
+                        print("des:", todo["des"])
+                        print("Status:", todo["status"])
                         print("-------------------------------------")
                         # endregion
 
@@ -303,227 +308,134 @@ while True:
                 if not found:
                     print("No record Found...")
 
-        # case "4" | "E":
-        #     while True:
-        #         # region continue
-        #         ans = input("Do you want to Edit a todo (yes-etc): ")
-        #         system("cls")
+        case "4" | "E":
+            while True:
+                # region continue
+                ans = input("Do you want to Edit a todo (yes-etc): ")
+                system("cls")
 
-        #         if ans != "yes":
-        #             break
-        #         # endregion
+                if ans != "yes":
+                    break
+                # endregion
 
-        #         display_col = ("Code", "Title", "Time", "Des", "Status")
-        #         display_indexes = (0, 1, 2, 3, 4)
+                display_col = ("code", "title", "time", "des", "status")
 
-        #         # region select edit col
-        #         while True:
-        #             # region display todos
-        #             print(
-        #                 "==============================================================="
-        #             )
-        #             print("Row", *display_col, sep="\t")
-        #             print(
-        #                 "---------------------------------------------------------------"
-        #             )
-        #             for row, todo in enumerate(todo_list, 1):
-        #                 print(row, *(todo[i] for i in display_indexes), sep="\t")
-        #             print(
-        #                 "==============================================================="
-        #             )
-        #             # endregion
-        #             edit_col = input(
-        #                 "Select Columns to edit: 1.[C]ode 2.[T]itle \nSelect: "
-        #             )
-        #             system("cls")
-        #             if edit_col in ("1", "2", "C", "T"):
-        #                 break
-        #             print("Remove column is not Valid! Please try again.")
+                # region select edit col
+                while True:
+                    # region display todos
+                    print(
+                        "==============================================================="
+                    )
+                    print("Row", *display_col, sep="\t")
+                    print(
+                        "---------------------------------------------------------------"
+                    )
+                    for row, todo in enumerate(todo_list, 1):
+                        print(row, *tuple(todo.values()), sep="\t")
+                    print(
+                        "==============================================================="
+                    )
+                    # endregion
+                    edit_col = input("Select Columns to edit: code, title \nSelect: ")
+                    system("cls")
+                    if edit_col in ("code", "title"):
+                        break
+                    print("Edit column is not Valid! Please try again.")
 
-        #         # endregion
+                # endregion
 
-        #         # region match edit column
-        #         match edit_col:
-        #             case "1" | "C":
-        #                 # region get code
-        #                 while True:
-        #                     # region display todos
-        #                     print(
-        #                         "==============================================================="
-        #                     )
-        #                     print("Row", *display_col, sep="\t")
-        #                     print(
-        #                         "---------------------------------------------------------------"
-        #                     )
-        #                     for row, todo in enumerate(todo_list, 1):
-        #                         print(
-        #                             row, *(todo[i] for i in display_indexes), sep="\t"
-        #                         )
-        #                     print(
-        #                         "==============================================================="
-        #                     )
-        #                     # endregion
+                # region display todos
+                print("===============================================================")
+                print("Row", *display_col, sep="\t")
+                print("---------------------------------------------------------------")
+                for row, todo in enumerate(todo_list, 1):
+                    print(row, *tuple(todo.values()), sep="\t")
+                print("===============================================================")
+                # endregion
 
-        #                     val = input("Code :")
-        #                     system("cls")
-        #                     if not val:
-        #                         print("Empty Field!Please try again!")
-        #                         continue
+                # region match edit column
+                print(edit_col, ":", end=" ")
+                val = input()
+                system("cls")
+                if not val:
+                    print("Empty Field!Please try again!")
+                    continue
 
-        #                     found = False
-        #                     for todo in todo_list:
-        #                         if int(val) == todo[0]:
-        #                             found = True
-        #                             break
+                found = False
+                for todo in todo_list:
+                    if (int(val) if edit_col == "code" else val) == todo[edit_col]:
+                        found = True
+                        break
 
-        #                     if found:
-        #                         break
+                if not found:
+                    print(edit_col, "does not even exist. Please try again.")
+                    break
 
-        #                     print("Code does not even exist. Please try again.")
-        #                 # endregion
-        #                 search_index = 0
+                # endregion
+                system("cls")
 
-        #             case "2" | "T":
-        #                 # region get title
-        #                 while True:
-        #                     # region display todos
-        #                     print(
-        #                         "==============================================================="
-        #                     )
-        #                     print("Row", *display_col, sep="\t")
-        #                     print(
-        #                         "---------------------------------------------------------------"
-        #                     )
-        #                     for row, todo in enumerate(todo_list, 1):
-        #                         print(
-        #                             row, *(todo[i] for i in display_indexes), sep="\t"
-        #                         )
-        #                     print(
-        #                         "==============================================================="
-        #                     )
-        #                     # endregion
-        #                     val = input("title: ")
-        #                     system("cls")
+                found = False
+                for todo in todo_list.copy():
+                    if todo[edit_col] == (int(val) if edit_col == "code" else val):
+                        found = True
+                        # region display current todo
+                        print("-------------------------------------")
+                        print("Title:", todo["title"])
+                        print("Time:", todo["time"])
+                        print("des:", todo["des"])
+                        print("Status:", todo["status"])
+                        print("-------------------------------------")
+                        # endregion
 
-        #                     if not val:
-        #                         print("Title is empty! Please try again!")
-        #                         continue
-        #                     break
-        #                 # endregion
-        #                 search_index = 1
-        #         # endregion
-        #         system("cls")
+                        edit_ans = input(
+                            "Do you want to Edit the above todo (yes-etc)? "
+                        )
+                        system("cls")
+                        if edit_ans == "yes":
+                            # region edit the current todo
+                            while True:
+                                edit_item = input(
+                                    "\nSelect item to Edit: title, time, des ,status , quit\nSelect: "
+                                )
+                                system("cls")
+                                if not edit_item:
+                                    print("Edit item is empty! Please try again.")
 
-        #         found = False
-        #         for todo in todo_list.copy():
-        #             if todo[search_index] == (int(val) if search_index == 0 else val):
-        #                 found = True
-        #                 # region display current todo
-        #                 print("-------------------------------------")
-        #                 print("Title:", todo[1])
-        #                 print("Time:", todo[2])
-        #                 print("des:", todo[3])
-        #                 print("Status:", todo[4])
-        #                 print("-------------------------------------")
-        #                 # endregion
+                                if edit_item == "quit":
+                                    break
 
-        #                 edit_ans = input(
-        #                     "Do you want to Edit the above todo (yes-etc)? "
-        #                 )
-        #                 system("cls")
-        #                 if edit_ans == "yes":
-        #                     # region edit the current todo
-        #                     while True:
-        #                         edit_item = input("\nSelect item to Edit: 1.[T]itle 2.[Ti]me 3.[D]es 4.[S]tatus\nSelect: ")
-        #                         system("cls")
-        #                         if edit_item:
-        #                             break
-        #                         print("Edit item is empty! Please try again.")
-        #                     # endregion
-        #                     # region match edit items
-        #                     match edit_item:
+                                # region get feature
+                                while True:
+                                    print("New", edit_item, end=": ")
+                                    new_feature = input()
+                                    system("cls")
 
-        #                         case "1" | "T":
-        #                             # region get title
-        #                             while True:
-        #                                 new_title = input("New title: ")
-        #                                 system("cls")
+                                    if not new_feature:
+                                        print("New feature is empty! Please try again.")
+                                        continue
 
-        #                                 if not new_title:
-        #                                     print("New title is empty! Please try again.")
-        #                                     continue
+                                    if new_feature == todo[edit_item]:
+                                        break
 
-        #                                 if new_title == todo[1]:
-        #                                     break
+                                    for todo_ in todo_list:
+                                        if todo_[edit_item] == new_feature:
+                                            print(
+                                                new_feature,
+                                                "already exists! Try another one.",
+                                            )
+                                            break
+                                    else:
+                                        todo[edit_item] = new_feature
+                                        print("Done")
+                                        sleep(1)
+                                        break
+                            # endregion
 
-        #                                 for todo_ in todo_list:
-        #                                     if todo_[1] == new_title:
-        #                                         print(new_title, "already exists! Try another one.")
-        #                                         break
-        #                                 else:
-        #                                     break
+                            # endregion
+                            print("Done.")
 
-        #                             # endregion
-
-        #                             todo[1] = new_title
-
-        #                         case "2" | "Ti":
-        #                             # region get time
-        #                             while True:
-        #                                 new_time = input("New time: ")
-        #                                 system("cls")
-
-        #                                 if not new_time:
-        #                                     print("New time is empty! Please try again.")
-        #                                     continue
-
-        #                                 if new_time == todo[2]:
-        #                                     break
-
-        #                                 if new_time in tuple([str(i) for i in range(2025, 2040)]):
-        #                                     break
-
-        #                                 print("Time is not valid! Please try again.")
-
-        #                             # endregion
-
-        #                             todo[2] = new_time
-
-        #                         case "3" | "D":
-        #                             # region get des
-        #                             new_des = input("New des: ")
-        #                             system("cls")
-        #                             # endregion
-
-        #                             todo[3] = new_des
-
-        #                         case "4" | "S":
-        #                             # region get status
-        #                             while True:
-        #                                 new_status = input("New status: ")
-        #                                 system("cls")
-
-        #                                 if not new_status:
-        #                                     print("New status is empty! Please try again.")
-        #                                     continue
-
-        #                                 if new_status == todo[4]:
-        #                                     break
-
-        #                                 if new_status in ("active", "deactive"):
-        #                                     break
-
-        #                                 print("Status is not valid! Please try again")
-
-        #                             # endregion
-
-        #                             todo[4] = new_status
-
-        #                     # endregion
-        #                     print("Done.")
-
-        #         if not found:
-        #             print("No record Found...")
+                if not found:
+                    print("No record Found...")
 
         case "5" | "S":
             while True:
@@ -555,9 +467,9 @@ while True:
                 print("Row", *display_col, sep="\t")
                 print("---------------------------------------------------------------")
                 for row, todo in enumerate(todo_list, 1):
-                    if value in todo:
+                    if value in tuple({**todo, "code": str(todo["code"])}.values()):
                         found = True
-                        print(row, *todo, sep="\t")
+                        print(row, *tuple(todo.values()), sep="\t")
 
                 if not found:
                     print("This value doesn't exist!")
