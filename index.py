@@ -83,7 +83,7 @@ while True:
                         print("Time is empty! Please try again!")
                         continue
 
-                    elif time in [str(i) for i in range(2025, 2040)]:
+                    elif time in frozenset(str(i) for i in range(2025, 2040)):
                         break
 
                     print("Time is out of range! Please try again.")
@@ -103,7 +103,7 @@ while True:
                         print("Status is empty! Please try again!")
                         continue
 
-                    elif status in ("active", "deactive"):
+                    elif status in frozenset(("active", "deactive")):
                         break
 
                     print("Status is not valid! Please try again.")
@@ -162,14 +162,14 @@ while True:
                             "Select Columns: code, title, time, des, status, quit\nSelect: "
                         )
                         system("cls")
-                        if input_col not in (
+                        if input_col not in frozenset((
                             "code",
                             "title",
                             "time",
                             "des",
                             "status",
                             "quit",
-                        ):
+                        )):
                             print("Invalid input column! Please try again.")
                             continue
 
